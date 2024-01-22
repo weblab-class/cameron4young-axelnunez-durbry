@@ -9,7 +9,6 @@ import Skeleton from "./pages/Skeleton.js";
 import "../utilities.css";
 
 import { socket } from "../client-socket.js";
-
 import { get, post } from "../utilities";
 
 /**
