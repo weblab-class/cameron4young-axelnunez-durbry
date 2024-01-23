@@ -1,1 +1,21 @@
 /* Fill me in :) */
+.landing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 120vh; Adjust as needed */
+}   
+
+.center{
+    display: block;
+    justify-content: center;
+    align-items: center;
+    /* position:absolute; */
+    text-align: center;
+    padding: 20px; /* Adjust as needed */
+}
+
+.down{
+    position:relative;
+    top:30vh;
+}

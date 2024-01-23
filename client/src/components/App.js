@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
 import NotFound from "./pages/NotFound.js";
-import Skeleton from "./pages/Skeleton.js";
+import Login from "./pages/Login.js";
 
 import "../utilities.css";
 
@@ -31,6 +31,7 @@ const App = () => {
     const decodedCredential = jwt_decode(userToken);
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
+      console.log(socket.id);
       setUserId(user._id);
       post("/api/initsocket", { socketid: socket.id });
     });
@@ -46,7 +47,7 @@ const App = () => {
       <Route
         path="/"
         element={
-          <Skeleton
+          <Login
             path="/"
             handleLogin={handleLogin}
             handleLogout={handleLogout}
