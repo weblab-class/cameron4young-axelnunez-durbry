@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
 import NotFound from "./pages/NotFound.js";
-import Login from "./pages/Login.js";
+import Landing from "./pages/Landing.js";
 import Canvas from "./pages/Canvas.js";
 import Feed from "./pages/Feed.js"
 
@@ -50,7 +50,7 @@ const App = () => {
       <Route
         path="/"
         element={
-          <Login
+          <Landing
             path="/"
             handleLogin={handleLogin}
             handleLogout={handleLogout}

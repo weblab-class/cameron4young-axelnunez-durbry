@@ -1,5 +1,6 @@
 import React from "react";
 import BarMenu from './BarMenu.js'
+import CreateCommunity from "./CreateCommunity.js";
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
 import { Link } from 'react-router-dom';
 
@@ -19,7 +20,7 @@ const Login = ({ userId, handleLogin, handleLogout }) => {
         </div>
       <div class="landing">
       <BarMenu className="button-container" style={{ border: '1px solid #ccc', padding: '10px' }}>
-        <button onClick={() => console.log('Button 1 clicked')}>create your own community</button>
+        <CreateCommunity />
         <Link to="/feed">
           <button onClick={() => console.log('Button 2 clicked')}>canvas feed</button>
         </Link>

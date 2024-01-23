@@ -12,7 +12,7 @@ import GridItem from "./GridItem";
 const Canvas = () => {
     
     // make an API call to get dimensions and string
-
+    // make sure community_name is equal to a name/id in the database
     const dimensions = 3
     const colors = [['#000000', '#FFFFFF', '#000000'],['#000000', '#FFFFFF', '#000000'],['#000000', '#FFFFFF', '#000000']]
 
