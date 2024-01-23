@@ -1,5 +1,7 @@
 import React from "react";
+import BarMenu from './BarMenu.js'
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
+import { Link } from 'react-router-dom';
 
 import "../../utilities.css";
 import "./Skeleton.css";
@@ -12,11 +14,16 @@ const Login = ({ userId, handleLogin, handleLogout }) => {
     <div>
       {userId ? (
       <div>
-        <div class="center">
+        <div class="map">
           <img src="https://geology.com/world/world-map.gif"/>
         </div>
       <div class="landing">
-      <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <BarMenu className="button-container" style={{ border: '1px solid #ccc', padding: '10px' }}>
+        <button onClick={() => console.log('Button 1 clicked')}>create your own community</button>
+        <Link to="/feed">
+          <button onClick={() => console.log('Button 2 clicked')}>canvas feed</button>
+        </Link>
+        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
         {userId ? (
           <button
             onClick={() => {
@@ -24,19 +31,20 @@ const Login = ({ userId, handleLogin, handleLogout }) => {
               handleLogout();
             }}
           >
-            Logout
+            sign out
           </button>
         ) : (
           <GoogleLogin onSuccess={handleLogin} onError={(err) => console.log(err)} />
         )}
         </GoogleOAuthProvider>
+      </BarMenu>
       </div>
     </div>
       ) : (
         <div class="down">
-        <div class="center">
-        <h1>placeIRL</h1>
-      </div>
+        <div class="map">
+          <h1>placeIRL</h1>
+        </div>
       <div class="landing">
       <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
         {userId ? (

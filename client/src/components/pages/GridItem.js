@@ -1,0 +1,51 @@
+import React, { useState } from 'react';
+import "../../utilities.css";
+import "./Skeleton.css";
+
+const GridItem = ({ i, j, color }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newColor, setNewColor] = useState(color);
+
+  const handleDivClick = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+    setNewColor(color);
+  };
+
+  const handlePalette = (event) => {
+    setNewColor(event.target.value);
+  };
+
+  const submit = () => {
+    console.log('Input value changed:', newColor);
+    setIsDialogOpen(false);
+  };
+
+  return (
+    <div>
+      <div
+        key={`${i}-${j}`}
+        className="grid-item"
+        style={{ backgroundColor: newColor }}
+        onClick={handleDivClick}
+      ></div>
+      {isDialogOpen && (
+        <div className="dialog">
+          <div className="dialog-container">
+            <div className="dialog">
+              <p>Choose a new color for Pixel ({i}, {j}).</p>
+              <input type="color" value={newColor} onChange={handlePalette}></input>
+              <button onClick={submit}>Submit</button>
+              <button onClick={handleDialogClose}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default GridItem;

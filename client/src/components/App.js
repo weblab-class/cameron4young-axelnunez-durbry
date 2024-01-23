@@ -5,6 +5,9 @@ import jwt_decode from "jwt-decode";
 
 import NotFound from "./pages/NotFound.js";
 import Login from "./pages/Login.js";
+import Canvas from "./pages/Canvas.js";
+import Feed from "./pages/Feed.js"
+
 
 import "../utilities.css";
 
@@ -55,6 +58,8 @@ const App = () => {
           />
         }
       />
+      <Route path="/canvas/:community_name" element={<Canvas />}/>
+      <Route path="/feed" element={<Feed />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
