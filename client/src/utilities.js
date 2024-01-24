@@ -47,6 +47,19 @@ export function get(endpoint, params = {}) {
     });
 }
 
+export function put(endpoint, params = {}) {
+  return fetch(endpoint, {
+    method: 'PUT',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(params),
+  })
+    .then(convertToJSON)
+    .catch((error) => {
+      // Give a useful error message
+      throw `PUT request to ${fullPath} failed with error:\n${error}`;
+    });
+}
+
 // Helper code to make a post request. Default parameter of empty JSON Object for params.
 // Returns a Promise to a JSON Object.
 export function post(endpoint, params = {}) {

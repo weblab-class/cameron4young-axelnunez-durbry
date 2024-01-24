@@ -3,6 +3,7 @@ import BarMenu from './BarMenu.js'
 import CreateCommunity from "./CreateCommunity.js";
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
 import { Link } from 'react-router-dom';
+import Map from './Map.js';
 
 import "../../utilities.css";
 import "./Skeleton.css";
@@ -16,7 +17,7 @@ const Login = ({ userId, handleLogin, handleLogout }) => {
       {userId ? (
       <div>
         <div class="map">
-          <img src="https://geology.com/world/world-map.gif"/>
+            <Map />
         </div>
       <div class="landing">
       <BarMenu className="button-container" style={{ border: '1px solid #ccc', padding: '10px' }}>

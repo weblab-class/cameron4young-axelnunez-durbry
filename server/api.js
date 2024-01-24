@@ -11,6 +11,7 @@ const express = require("express");
 
 // import models so we can interact with the database
 const User = require("./models/user");
+const Canvas = require("./models/canvas");
 
 // import authentication library
 const auth = require("./auth");
@@ -20,6 +21,7 @@ const router = express.Router();
 
 //initialize socket
 const socketManager = require("./server-socket");
+const canvas = require("./models/canvas");
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -28,7 +30,6 @@ router.get("/whoami", (req, res) => {
     // not logged in
     return res.send({});
   }
-
   res.send(req.user);
 });
 
@@ -43,6 +44,49 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 // | write your API methods below!|
 // |------------------------------|
+
+router.get("/user", (req, res) => {
+  console.log(req);
+  User.findById(req.query.userid).then((user) => {
+    res.send(user);
+  });
+});
+
+// Makes a new canvas
+router.post("/canvas", (req, res) => {
+  console.log(req.body);
+  const newCanvas = new Canvas({
+    name: req.body.name,
+    moderators: req.body.moderators,
+    // location: req.body.location,
+    pixels: req.body.pixels,
+    visitors: req.body.visitors
+  });
+  newCanvas.save().then((canvas) => res.send(canvas));
+});
+
+// Updates a pixel 
+router.put('/canvas', async(req, res) => {
+  console.log(req.body)
+  const requestData = req.body;
+  const updatedCanvas = await Canvas.findOneAndUpdate(
+      {name: req.body.name}, requestData
+  );
+  res.json({ success: true, updatedCanvas });
+})
+
+// Retrieves a canvas using name
+router.get("/canvas/:canvas_name", async(req, res) => {
+  Canvas.find({name : req.params.canvas_name}).then((canvas) => res.send(JSON.stringify(canvas[0])));
+});
+
+router.post("/initsocket", (req, res) => {
+  // do nothing if user not logged in
+  if (req.user){
+    socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
+  }
+  res.send({});
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

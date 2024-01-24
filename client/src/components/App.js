@@ -28,6 +28,7 @@ const App = () => {
       }
     });
   }, []);
+  console.log(userId);
 
   const handleLogin = (credentialResponse) => {
     const userToken = credentialResponse.credential;
@@ -44,6 +45,16 @@ const App = () => {
     setUserId(undefined);
     post("/api/logout");
   };
+
+  const successCallback = (position) => {
+    console.log(position);
+  };
+  
+  const errorCallback = (error) => {
+    console.log(error);
+  };
+  
+  navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 
   return (
     <Routes>

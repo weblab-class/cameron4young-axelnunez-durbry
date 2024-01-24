@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "../../utilities.css";
 import "./Skeleton.css";
+import {put} from "../../utilities";
 
-const GridItem = ({ i, j, color }) => {
+
+const GridItem = ({community_name, colors, i, j, color }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newColor, setNewColor] = useState(color);
 
@@ -20,7 +22,11 @@ const GridItem = ({ i, j, color }) => {
   };
 
   const submit = () => {
-    console.log('Input value changed:', newColor);
+    // subtract a pixel from the user's count
+    colors[i][j] = newColor
+    put(`/api/canvas`, {name: community_name, pixels: colors}).then(res=>{
+      console.log(res);
+    })
     setIsDialogOpen(false);
   };
 
