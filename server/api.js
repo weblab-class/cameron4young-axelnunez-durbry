@@ -60,17 +60,15 @@ router.post("/canvas", (req, res) => {
 
 // Updates a pixel 
 router.put('/canvas', async(req, res) => {
-  console.log(req.body)
   const requestData = req.body;
   const updatedCanvas = await Canvas.findOneAndUpdate(
-      {name: req.body.name}, requestData
+      {_id: req.body._id}, requestData
   );
   res.json({ success: true, updatedCanvas });
 })
 
 
 router.put('/user', async(req, res) => {
-  console.log(req.body)
   const requestData = req.body;
   const updatedUser = await User.findOneAndUpdate(
       {googleid: req.body.googleid}, requestData
@@ -82,6 +80,13 @@ router.put('/user', async(req, res) => {
 router.get("/canvas/:canvas_name", async(req, res) => {
   Canvas.find({name : req.params.canvas_name}).then((canvas) => res.send(JSON.stringify(canvas[0])));
 });
+
+// Retrieves a canvas using id
+router.get("/canvas/id/:canvas_id", async(req, res) => {
+  console.log("helo");
+  Canvas.find({_id : req.params.canvas_id}).then((canvas) => res.send(JSON.stringify(canvas[0])));
+});
+
 
 router.post("/initsocket", (req, res) => {
   // do nothing if user not logged in

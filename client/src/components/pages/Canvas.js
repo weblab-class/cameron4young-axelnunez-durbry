@@ -25,7 +25,7 @@ const Canvas = () => {
     }
   }
     
-  if (canv==null){
+  if (typeof canv==='undefined'){
     useEffect(() => {
       document.title = community_name;
       try {
@@ -41,31 +41,44 @@ const Canvas = () => {
 
 
   } else{
-    const dimensions = canv.pixels.length;
-    const colors = canv.pixels
+    let dimensions = canv.pixels.length;
+    let colors = canv.pixels
     let input_id = `_${canv._id}`
+
     setUser();
+
     useEffect(() => {
       document.title = community_name;
       get(`/api/canvas/${community_name}`).then((response)=>{
         setCanv(response);
       });
-      if (currentUser===undefined){
-        console.log("wait")
-      } else{
-        let newPlacesVisited = currentUser.placesVisited;
-        newPlacesVisited[`_${canvas_id}`]--;
-        put(`/api/user`, {googleid: user.googleid, placesVisited: newPlacesVisited}).then(res=>{
-          console.log(res);
-        })
-      }
-    }, canv);
+      // if (currentUser===undefined){
+      //   console.log("wait")
+      // } else{
+      //   let newPlacesVisited = currentUser.placesVisited;
+      //   newPlacesVisited[`_${canv._id}`]--;
+      //   put(`/api/user`, {googleid: currentUser.googleid, placesVisited: newPlacesVisited}).then(res=>{
+      //     console.log(res.updatedUser);
+      //   })
+      // }
+    }, currentUser);
 
     if (currentUser){
       if (currentUser.placesVisited[input_id]!=null){
         numPixels = currentUser.placesVisited[input_id];
       } else{
-        numPixels = 0;
+        let newPlacesVisited = currentUser.placesVisited;
+        // console.log(newPlacesVisited);
+        newPlacesVisited[input_id] = 5;
+        // console.log(newPlacesVisited);
+        try {
+          put(`/api/user`, {googleid: currentUser.googleid, placesVisited: newPlacesVisited}).then(res=>{
+            console.log(res);
+          })
+        } catch (error) {
+          console.log(error);
+        }
+        numPixels = 5;
       }
     } 
     const squareGrid = {
@@ -74,12 +87,13 @@ const Canvas = () => {
         gridTemplateRows: `repeat(${dimensions}, 30px)`,
         gridGap: 0
       };
+    // let theUser = JSON.stringify(currentUser);
+    let theUser = currentUser
     const generateGrid = () => {
-      const gridItems = [];
-
+    const gridItems = [];
         for (var i = 0; i < dimensions; i++) {
           for (var j = 0; j < dimensions; j++) {
-            gridItems.push(<GridItem community_name = {community_name} colors = {colors} key={`${i}-${j}`} i={i} j={j} color={colors[i][j]}/>);
+            gridItems.push(<GridItem user = {theUser} canvas_id = {canv._id} colors = {colors} key={`${i}-${j}`} i={i} j={j} color={colors[i][j]}/>);
           }
         }
         return gridItems;

@@ -21,24 +21,7 @@ const Login = ({ userId, handleLogin, handleLogout }) => {
         </div>
       <div class="landing">
       <BarMenu className="button-container" style={{ border: '1px solid #ccc', padding: '10px' }}>
-        <CreateCommunity />
-        <Link to="/feed">
-          <button onClick={() => console.log('Button 2 clicked')}>canvas feed</button>
-        </Link>
-        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-        {userId ? (
-          <button
-            onClick={() => {
-              googleLogout();
-              handleLogout();
-            }}
-          >
-            sign out
-          </button>
-        ) : (
-          <GoogleLogin onSuccess={handleLogin} onError={(err) => console.log(err)} />
-        )}
-        </GoogleOAuthProvider>
+        
       </BarMenu>
       </div>
     </div>

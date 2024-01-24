@@ -2,12 +2,20 @@ import React, { useState, useEffect } from 'react';
 import "../../utilities.css";
 import "./Skeleton.css";
 import {get, put} from "../../utilities";
+import { parse } from 'ipaddr.js';
 
 
-const GridItem = ({community_name, colors, i, j, color }) => {
+const GridItem = ({user, canvas_id, colors, i, j, color }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newColor, setNewColor] = useState(color);
-
+  const [currentUser, setCurrentUser] = useState();
+  async function setUser (){
+    try {
+      get("/api/whoami").then((user) => setCurrentUser(user));
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const handleDivClick = () => {
     setIsDialogOpen(true);
   };
@@ -20,17 +28,24 @@ const GridItem = ({community_name, colors, i, j, color }) => {
   const handlePalette = (event) => {
     setNewColor(event.target.value);
   };
-
-  const submit = () => {
+  async function submit() {
+    console.log(user)
     // subtract a pixel from the user's count
+    let input_id = `_${canvas_id}`
+    console.log(user.googleid);
+    let newVisited = user.placesVisited;
+    newVisited[input_id]--;
+    put(`/api/user`, {googleid: user.googleid, placesVisited: newVisited}).then(res=>{
+      user = res.updatedUser;
+      console.log(res);
+    })
     // change the pixel
     colors[i][j] = newColor
-    put(`/api/canvas`, {name: community_name, pixels: colors}).then(res=>{
+    put(`/api/canvas`, {_id: canvas_id, pixels: colors}).then(res=>{
       console.log(res);
     })
     setIsDialogOpen(false);
   };
-
   return (
     <div>
       <div
