@@ -15,6 +15,7 @@
 
 // validator runs some basic checks to make sure you've set everything up correctly
 // this is a tool provided by staff, so you don't need to worry about it
+require('dotenv').config();
 const validator = require("./validator");
 validator.checkSetup();
 
@@ -36,7 +37,7 @@ const socketManager = require("./server-socket");
 
 // Server configuration below
 // TODO change connection URL after setting up your team database
-const mongoConnectionURL = "mongodb+srv://cameron4young:02GjSYpmjuc23CRQ@placeirl.ziduqqq.mongodb.net/?retryWrites=true&w=majority";
+const mongoConnectionURL = process.env.MONGO_SRV;
 // TODO change database name to the name you chose
 const databaseName = "placeIRL";
 
@@ -64,7 +65,7 @@ app.use(express.json());
 app.use(
   session({
     // TODO: add a SESSION_SECRET string in your .env file, and replace the secret with process.env.SESSION_SECRET
-    secret: "session-secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
   })
