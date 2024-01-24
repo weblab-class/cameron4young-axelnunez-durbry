@@ -45,13 +45,6 @@ router.post("/initsocket", (req, res) => {
 // | write your API methods below!|
 // |------------------------------|
 
-router.get("/user", (req, res) => {
-  console.log(req);
-  User.findById(req.query.userid).then((user) => {
-    res.send(user);
-  });
-});
-
 // Makes a new canvas
 router.post("/canvas", (req, res) => {
   console.log(req.body);
@@ -73,6 +66,16 @@ router.put('/canvas', async(req, res) => {
       {name: req.body.name}, requestData
   );
   res.json({ success: true, updatedCanvas });
+})
+
+
+router.put('/user', async(req, res) => {
+  console.log(req.body)
+  const requestData = req.body;
+  const updatedUser = await User.findOneAndUpdate(
+      {googleid: req.body.googleid}, requestData
+  );
+  res.json({ success: true, updatedUser });
 })
 
 // Retrieves a canvas using name

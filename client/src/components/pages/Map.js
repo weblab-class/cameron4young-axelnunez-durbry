@@ -18,7 +18,6 @@ const App = () => {
           mapContainerClassName="map-container"
           center={center}
           zoom={15}
-          // options={mapId  "7c6eabd6f4b9fc28"}
         />
       )}
     </div>

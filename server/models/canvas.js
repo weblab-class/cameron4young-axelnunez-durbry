@@ -4,7 +4,7 @@ const CanvasSchema = new mongoose.Schema({
     name: String,
     moderators: [String],
     pixels: [[String]],
-    location: Object,
+    // location: Object,
 //     {
 //       "type" : "Point",
 //       "coordinates" : [ -73.9375, 40.8303 ]

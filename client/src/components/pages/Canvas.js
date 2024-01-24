@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {get} from "../../utilities";
+import {get, put} from "../../utilities";
 import "../../utilities.css";
 import "./Skeleton.css";
 import { useParams } from 'react-router-dom';
@@ -12,73 +12,90 @@ import GridItem from "./GridItem";
 const Canvas = () => {
     
     // make an API call to get dimensions and string
-    const [canv, setCanv] = useState();
-    const [currentUser, setCurrentUser] = useState();
-    const { community_name } = useParams();
-    let numPixels;
-    get("/api/whoami").then((user) => setCurrentUser(user));
-    // if (currentUser){
-    //   console.log(currentUser.placesVisited.mhall);
-    //   if (currentUser.placesVisited.hasOwnProperty(community_name)){
-    //     numPixels = currentUser.placesVisited.community_name;
-    //   } else{
-    //     numPixels = 0;
-    //   }
-    // } 
+  const [canv, setCanv] = useState();
+  const [currentUser, setCurrentUser] = useState();
+  const { community_name } = useParams();
+  let numPixels;
+
+  async function setUser (){
+    try {
+      get("/api/whoami").then((user) => setCurrentUser(user));
+    } catch (error) {
+      console.log(error);
+    }
+  }
     
-    if (canv==null){
-      useEffect(() => {
-        document.title = community_name;
-        try {
-          get(`/api/canvas/${community_name}`).then((response)=>{
-            setCanv(response);
-          });
-        } catch (error) {
-          return <p>Canvas not found.</p>;
-        }
-        
-      }, canv);
-      return <></>;
-    } else{
-      useEffect(() => {
-        document.title = community_name;
+  if (canv==null){
+    useEffect(() => {
+      document.title = community_name;
+      try {
         get(`/api/canvas/${community_name}`).then((response)=>{
           setCanv(response);
         });
-      }, canv);
+      } catch (error) {
+        return <p>Canvas not found.</p>;
+      }
+      
+    }, canv);
+    return <></>;
 
-      const dimensions = canv.pixels.length;
-      const colors = canv.pixels
-  
-  
-      const squareGrid = {
-          display: 'grid',
-          gridTemplateColumns: `repeat(${dimensions}, 30px)`,
-          gridTemplateRows: `repeat(${dimensions}, 30px)`,
-          gridGap: 0
-        };
-  
-      const generateGrid = () => {
-          const gridItems = [];
-          for (var i = 0; i < dimensions; i++) {
-            for (var j = 0; j < dimensions; j++) {
-              gridItems.push(<GridItem community_name = {community_name} colors = {colors} key={`${i}-${j}`} i={i} j={j} color={colors[i][j]}/>);
-            }
-          }
-          return gridItems;
+
+  } else{
+    const dimensions = canv.pixels.length;
+    const colors = canv.pixels
+    let input_id = `_${canv._id}`
+    setUser();
+    useEffect(() => {
+      document.title = community_name;
+      get(`/api/canvas/${community_name}`).then((response)=>{
+        setCanv(response);
+      });
+      if (currentUser===undefined){
+        console.log("wait")
+      } else{
+        let newPlacesVisited = currentUser.placesVisited;
+        newPlacesVisited[`_${canvas_id}`]--;
+        put(`/api/user`, {googleid: user.googleid, placesVisited: newPlacesVisited}).then(res=>{
+          console.log(res);
+        })
+      }
+    }, canv);
+
+    if (currentUser){
+      if (currentUser.placesVisited[input_id]!=null){
+        numPixels = currentUser.placesVisited[input_id];
+      } else{
+        numPixels = 0;
+      }
+    } 
+    const squareGrid = {
+        display: 'grid',
+        gridTemplateColumns: `repeat(${dimensions}, 30px)`,
+        gridTemplateRows: `repeat(${dimensions}, 30px)`,
+        gridGap: 0
       };
-      return <div>
-          <div style={squareGrid}>{
-              generateGrid()}
-          </div>
-          <p>
-            {community_name}
-          </p>
-          <p>
-            Pixels left: {numPixels}
-          </p>
+    const generateGrid = () => {
+      const gridItems = [];
+
+        for (var i = 0; i < dimensions; i++) {
+          for (var j = 0; j < dimensions; j++) {
+            gridItems.push(<GridItem community_name = {community_name} colors = {colors} key={`${i}-${j}`} i={i} j={j} color={colors[i][j]}/>);
+          }
+        }
+        return gridItems;
+    };
+  return <div>
+      <div style={squareGrid}>{
+          generateGrid()}
       </div>
-    }
+      <p>
+        {community_name}
+      </p>
+      <p>
+        Pixels left: {numPixels}
+      </p>
+  </div>
+  }
 };
 
 export default Canvas;

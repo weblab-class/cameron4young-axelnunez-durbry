@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "../../utilities.css";
 import "./Skeleton.css";
-import {put} from "../../utilities";
+import {get, put} from "../../utilities";
 
 
 const GridItem = ({community_name, colors, i, j, color }) => {
@@ -23,6 +23,7 @@ const GridItem = ({community_name, colors, i, j, color }) => {
 
   const submit = () => {
     // subtract a pixel from the user's count
+    // change the pixel
     colors[i][j] = newColor
     put(`/api/canvas`, {name: community_name, pixels: colors}).then(res=>{
       console.log(res);
