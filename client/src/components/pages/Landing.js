@@ -2,7 +2,6 @@ import React from "react";
 import BarMenu from './BarMenu.js'
 import CreateCommunity from "./CreateCommunity.js";
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
-import { Link } from 'react-router-dom';
 import Map from './Map.js';
 
 import "../../utilities.css";

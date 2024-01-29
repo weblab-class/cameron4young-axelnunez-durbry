@@ -1,7 +1,5 @@
 import {post} from "./utilities";
 
-
-
 const createCanvas = (name, moderators, visitors) => {
   let pixelTest = []; 
   for (let i = 0; i<15; i++){

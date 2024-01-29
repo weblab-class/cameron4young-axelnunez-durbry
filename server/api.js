@@ -81,15 +81,25 @@ router.get("/canvas/:canvas_name", async(req, res) => {
   Canvas.find({name : req.params.canvas_name}).then((canvas) => res.send(JSON.stringify(canvas[0])));
 });
 
+// Retrieves a canvas using name
+router.get("/all/canvas", async(req, res) => {
+  try {
+    const data = await Canvas.find().sort({ visitors: -1 });
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 // Retrieves a canvas using id
 router.get("/canvas/id/:canvas_id", async(req, res) => {
-  console.log("helo");
   Canvas.find({_id : req.params.canvas_id}).then((canvas) => res.send(JSON.stringify(canvas[0])));
 });
 
 
 router.post("/initsocket", (req, res) => {
-  // do nothing if user not logged in
+  // do nothing if user not logged ins
   if (req.user){
     socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
   }

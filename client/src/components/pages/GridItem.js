@@ -5,17 +5,29 @@ import {get, put} from "../../utilities";
 import { parse } from 'ipaddr.js';
 
 
-const GridItem = ({user, canvas_id, colors, i, j, color }) => {
+const GridItem = ({canvas_id, colors, i, j, color }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newColor, setNewColor] = useState(color);
   const [currentUser, setCurrentUser] = useState();
+
   async function setUser (){
     try {
-      get("/api/whoami").then((user) => setCurrentUser(user));
+      await get("/api/whoami").then((user) => setCurrentUser(user));
     } catch (error) {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    try {
+      setUser()
+      console.log(currentUser);
+    } catch (error) {
+      console.log(error)
+      // return <p>Canvas not found.</p>;
+    }
+  }, []);
+
   const handleDivClick = () => {
     setIsDialogOpen(true);
   };
@@ -29,14 +41,13 @@ const GridItem = ({user, canvas_id, colors, i, j, color }) => {
     setNewColor(event.target.value);
   };
   async function submit() {
-    console.log(user)
     // subtract a pixel from the user's count
+    setUser();
     let input_id = `_${canvas_id}`
-    console.log(user.googleid);
-    let newVisited = user.placesVisited;
+    let newVisited = currentUser.placesVisited;
     newVisited[input_id]--;
-    put(`/api/user`, {googleid: user.googleid, placesVisited: newVisited}).then(res=>{
-      user = res.updatedUser;
+    put(`/api/user`, {googleid: currentUser.googleid, placesVisited: newVisited}).then(res=>{
+      setCurrentUser(res.updatedUser);
       console.log(res);
     })
     // change the pixel

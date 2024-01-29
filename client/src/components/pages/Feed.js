@@ -11,11 +11,13 @@ import {get} from "../../utilities";
 // for each hexcode, we add a pixel of said color
 
 const Feed = () => {
-
     const [currentUser, setCurrentUser] = useState();
+    const [canvasList, setCanvasList] = useState([]);
     const { type } = useParams();
 
-    const setUser = async () => {
+    
+
+    async function setUser(){
         try {
             const user = await get("/api/whoami");
             setCurrentUser(user);
@@ -23,28 +25,47 @@ const Feed = () => {
             console.log(error);
         }
     };
-    useEffect(() => {
-       setUser();
-    }, [type]);
 
-    let canvases = [];
-
-    if (type === "top") {
-        canvases = ['Maseeh Hall', 'Simmons Hall', 'Sigma Nu', 'Statue of Liberty', 'The Stud'];
-    } else if (type === "personal") {
-        for (const prop in currentUser?.placesVisited) {
-            let real_id = prop.slice(1)
-            console.log(real_id);
-            try {
-                get(`/api/canvas/id/${real_id}`).then((response)=>{
-                  canvases.push(response.name)
+    async function setCanvases(){
+        let canvList = [];
+        try {
+            if (type==="top"){
+                let reactObjList = [];
+                await get(`/api/all/canvas`).then((response)=>{
+                    reactObjList = response;
                 });
-              } catch (error) {
-                console.log(error);
-              }
+                console.log(reactObjList);
+                for (const object of reactObjList){
+                    console.log(object.name, object.visitors)
+                    canvList.push(object.name);
+                }
+                console.log(canvList);
+            } else if (type === "personal") {
+                for (const prop in currentUser?.placesVisited) {
+                    let real_id = prop.slice(1)
+                    await get(`/api/canvas/id/${real_id}`).then((response)=>{
+                        canvList.push(response.name)
+                    });
+                }
+            } else {
+                console.log("Unexpected URL.");
+            }
+        } catch (error) {
+            console.log(error)
         }
-    } else {
-        return <p>Invalid URL.</p>;
+        return canvList;
+    }
+
+    function generateGrid(canvases){
+        const topCanvases = [];
+        for (let i = 0; i < canvases.length; i++) {
+            const link = `/canvas/${canvases[i]}`
+            topCanvases.push(
+            <Link key={i} to={link}>
+                <li id = {i} style={feed_box}>{i+1}. {canvases[i]}</li>
+            </Link>);
+        }
+        return topCanvases;
     }
 
     const feed_box = {
@@ -58,23 +79,34 @@ const Feed = () => {
         boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)', 
     };
 
-    const generateGrid = () => {
-        const topCanvases = [];
-        for (let i = 0; i < canvases.length; i++) {
-            const link = `/canvas/${canvases[i]}`
-            topCanvases.push(
-            <Link to={link}>
-                <li id = {i} style={feed_box}>{i+1}. {canvases[i]}</li>
-            </Link>);
+
+    useEffect(() => {
+        setUser();
+        setCanvases().then((canvases)=>{
+            setCanvasList(canvases);
+        })
+    },[]);
+
+    useEffect(() => {
+        if (currentUser){
+            if (type === "top" || type =="personal") {
+                setCanvases().then((canvases)=>{
+                    setCanvasList(canvases);                
+                });
+            } else {
+                return <p>Invalid URL.</p>;
+            }
         }
-        return topCanvases;
+    },[currentUser, type] );
+    if (type ==="top" || type==="personal"){
+        return <>
+                <p>{type}</p>
+                <ol className="feed-list"> {generateGrid(canvasList)}</ol>
+                </>
+    } else{
+        return <p>Invalid URL.</p>
     }
-
-    return <div>
-        <p>{type}</p>
-        <ol class="feed-list"> {generateGrid()}</ol>
-    </div>
-
+    
 }
 
 export default Feed;
