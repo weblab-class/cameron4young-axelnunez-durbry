@@ -88,3 +88,8 @@ form {
 .u-link:hover {
   color: var(--primary--dim);
 }
+
+.home {
+  display: flex;
+  flex-direction: row;
+}
