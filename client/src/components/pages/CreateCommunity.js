@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import {get} from "../../utilities";
-import createCanvas from '../../createCanvas';
+import React, { useState } from "react";
+import { get } from "../../utilities";
+import createCanvas from "../../createCanvas";
 import "../../utilities.css";
 import "./Skeleton.css";
 
@@ -22,34 +22,32 @@ const CreateCommunity = () => {
 
   async function submit() {
     let alreadyExisting = false;
-  
+
     try {
       const response = await get(`/api/canvas/${communityName}`);
       console.log(response);
-  
+
       if (response != null) {
         alreadyExisting = true;
       }
     } catch (error) {
       setIsDialogOpen(false);
     }
-  
+
     console.log(alreadyExisting);
-  
+
     if (alreadyExisting) {
       console.log("exists");
     } else {
       createCanvas(communityName, ["Cameron"], 1);
     }
-  
+
     setIsDialogOpen(false);
-  };
-  
+  }
+
   return (
     <div>
-      <button onClick={handleDivClick}>
-        create new community
-      </button>
+      <button onClick={handleDivClick}>create new community</button>
       {isDialogOpen && (
         <div className="dialog">
           <div className="dialog-container">

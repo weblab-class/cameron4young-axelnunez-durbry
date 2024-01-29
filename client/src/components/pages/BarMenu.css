@@ -1,0 +1,35 @@
+.NavBar-container {
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+  width: 10%;
+  gap: 30px;
+  padding: var(--s) var(--m);
+  background-color: #476e32;
+}
+
+.NavBar-title {
+  color: var(--white);
+  font-size: 20px;
+}
+
+.NavBar-linkContainer {
+  display: flex;
+  justify-content: flex-start;
+  flex-grow: 4;
+  flex-direction: column;
+  gap: 40px;
+  /* margin-left: var(--l); */
+}
+
+.NavBar-link,
+.NavBar-link:visited {
+  color: var(--white);
+  opacity: 0.6;
+  text-decoration: none;
+}
+
+.NavBar-link:hover {
+  opacity: 1.5;
+}
