@@ -22,6 +22,12 @@ const Canvas = () => {
   let difference = undefined;
 
 
+  function reloadWindowEveryFiveSeconds() {
+    setInterval(
+        window.location.reload()
+    , 5000);
+  }
+
 
   useEffect(() => {
     try {
@@ -30,7 +36,6 @@ const Canvas = () => {
           await get("/api/whoami").then((user) => {
             setCurrentUser(user)
           });
-          console.log(currentUser)
         } catch (error) {
           console.log(error);
         }
@@ -39,10 +44,8 @@ const Canvas = () => {
       setUser(); // gets user
 
       get(`/api/canvas/${community_name}`).then((response)=>{ // gets canvas
-        console.log(response);
         setCanv(response);
       });
-      console.log(location)
 
       navigator.geolocation.getCurrentPosition( //gets location
         (position) => {
@@ -100,7 +103,7 @@ const Canvas = () => {
         }
       }
     } else {
-      return <p>Canvas not found</p>
+      reloadWindowEveryFiveSeconds();
     }
     const squareGrid = {
         display: 'grid',
