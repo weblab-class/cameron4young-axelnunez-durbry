@@ -23,10 +23,13 @@ const Canvas = () => {
 
 
   function reloadWindowEveryFiveSeconds() {
-    setInterval(
+    if (!currentUser||!canv){
+      setInterval(
         window.location.reload()
     , 5000);
   }
+    }
+ 
 
 
   useEffect(() => {
