@@ -22,16 +22,6 @@ const Canvas = () => {
   let difference = undefined;
 
 
-  function reloadWindowEveryFiveSeconds() {
-    if (!currentUser||!canv){
-      setInterval(
-        window.location.reload()
-    , 5000);
-  }
-    }
- 
-
-
   useEffect(() => {
     try {
       async function setUser (){ 
@@ -106,7 +96,7 @@ const Canvas = () => {
         }
       }
     } else {
-      reloadWindowEveryFiveSeconds();
+      console.log("All good.")
     }
     const squareGrid = {
         display: 'grid',
