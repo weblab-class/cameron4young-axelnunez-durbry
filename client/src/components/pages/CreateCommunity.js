@@ -26,14 +26,16 @@ const CreateCommunity = (userLocation) => {
     try {
       const response = await get(`/api/canvas/${communityName}`);
       console.log(response)
-      if (response != null) {
+      console.log(response.response)
+      if (response.response == undefined) {
         setAlreadyExisting(true);
+        console.log("UM")
       } else {
+        console.log("HELLO")
         createCanvas(communityName, [currentLocation.latitude, currentLocation.longitude], 1);
         window.location.href = `/canvas/${communityName}`;
       }
     } catch (error) {
-      console.log(error)
       setAlreadyExisting(true);
     }
   }
