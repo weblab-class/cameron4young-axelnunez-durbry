@@ -18,14 +18,16 @@ const Canvas = () => {
 
   async function setUser (){
     try {
-      await get("/api/whoami").then((user) => setCurrentUser(user));
+      await get("/api/whoami").then((user) => {
+        setCurrentUser(user)
+      });
+      console.log(currentUser)
     } catch (error) {
       console.log(error);
     }
   }
   
   useEffect(() => {
-    document.title = community_name;
     try {
       setUser();
       get(`/api/canvas/${community_name}`).then((response)=>{
@@ -92,9 +94,6 @@ const Canvas = () => {
       </div>
       <p>
         {community_name}
-      </p>
-      <p>
-        Pixels left: {numPixels}
       </p>
   </div>
   }

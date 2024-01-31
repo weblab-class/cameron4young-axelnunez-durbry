@@ -24,7 +24,6 @@ const GridItem = ({canvas_id, colors, i, j, color }) => {
       console.log(currentUser);
     } catch (error) {
       console.log(error)
-      // return <p>Canvas not found.</p>;
     }
   }, []);
 
@@ -41,15 +40,6 @@ const GridItem = ({canvas_id, colors, i, j, color }) => {
     setNewColor(event.target.value);
   };
   async function submit() {
-    // subtract a pixel from the user's count
-    setUser();
-    let input_id = `_${canvas_id}`
-    let newVisited = currentUser.placesVisited;
-    newVisited[input_id]--;
-    put(`/api/user`, {googleid: currentUser.googleid, placesVisited: newVisited}).then(res=>{
-      setCurrentUser(res.updatedUser);
-      console.log(res);
-    })
     // change the pixel
     colors[i][j] = newColor
     put(`/api/canvas`, {_id: canvas_id, pixels: colors}).then(res=>{
@@ -69,7 +59,7 @@ const GridItem = ({canvas_id, colors, i, j, color }) => {
         <div className="dialog">
           <div className="dialog-container">
             <div className="dialog">
-              <p>Choose a new color for Pixel ({i}, {j}).</p>
+              <p>Choose a new color for pixel ({i}, {j}).</p>
               <input type="color" value={newColor} onChange={handlePalette}></input>
               <button onClick={submit}>Submit</button>
               <button onClick={handleDialogClose}>Close</button>

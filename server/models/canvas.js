@@ -2,13 +2,11 @@ const mongoose = require("mongoose");
 
 const CanvasSchema = new mongoose.Schema({
     name: String,
-    moderators: [String],
     pixels: [[String]],
-    // location: Object,
-//     {
-//       "type" : "Point",
-//       "coordinates" : [ -73.9375, 40.8303 ]
-//    }
+    location: {
+      type: { type: String, default: 'Point' },
+      coordinates: [Number]
+    },
     visitors: Number
   });
   

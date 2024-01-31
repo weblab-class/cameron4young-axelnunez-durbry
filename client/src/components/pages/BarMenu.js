@@ -9,19 +9,19 @@ const GOOGLE_CLIENT_ID = "484515812638-qmq9pmi6ka07fp1vem17m62to5dodu7f.apps.goo
 const BarMenu = (props) => {
   return (
     <nav className="NavBar-container">
-      <div className="NavBar-title ">Place IRL</div>
+      <div className="NavBar-title ">placeIRL</div>
       <div className="NavBar-linkContainer">
         <Link to="/" className="NavBar-link">
-          Home
+          home
         </Link>
         <Link to="/feed/top" className="NavBar-link">
-          Canvas Feed
+          top places
         </Link>
         <Link to="/feed/personal" className="NavBar-link">
-          Your communities
+          places visited
         </Link>
         <Link to="/create" className="NavBar-link">
-          Create New community
+          create new place
         </Link>
         <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
           <Link
@@ -32,7 +32,7 @@ const BarMenu = (props) => {
             }}
             to="/"
           >
-            Sign out
+            sign out
           </Link>
         </GoogleOAuthProvider>
       </div>

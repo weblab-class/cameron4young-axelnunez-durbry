@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
+//import { Link } from "react-router-dom";
 import NotFound from "./pages/NotFound.js";
 import Landing from "./pages/Landing.js";
 import Canvas from "./pages/Canvas.js";
@@ -18,17 +19,27 @@ import { get, post } from "../utilities";
  */
 const App = () => {
   const [userId, setUserId] = useState(undefined);
-  const GOOGLE_CLIENT_ID =
-    "484515812638-qmq9pmi6ka07fp1vem17m62to5dodu7f.apps.googleusercontent.com";
-
+  const [currentUser, setCurrentUser] = useState();
+  const [location, setLocation] = useState();
+  
   useEffect(() => {
+    document.title = "placeIRL";
     get("/api/whoami").then((user) => {
+      setCurrentUser(user);
       if (user._id) {
         // they are registed in the database, and currently logged in.
         setUserId(user._id);
       }
     });
-  }, [userId]);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocation({ latitude, longitude });
+      },
+      (error) => {
+        setLocation(undefined);
+    });
+  }, [userId, location]);
   
 
   const handleLogin = (credentialResponse) => {
@@ -47,16 +58,6 @@ const App = () => {
     post("/api/logout");
   };
 
-  const successCallback = (position) => {
-    console.log(position);
-  };
-
-  const errorCallback = (error) => {
-    console.log(error);
-  };
-
-  navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-
   return (
     <>
       <div>
@@ -68,17 +69,16 @@ const App = () => {
                 path="/"
                 element={
                   <Landing
-                    // path="/"
                     handleLogin={handleLogin}
-                    handleLogout={handleLogout}
                     userId={userId}
+                    location = {location}
                   />
                 }
               />
               <Route path="/canvas/:community_name" element={<Canvas />} />
               <Route path="/feed/:type" element={<Feed />} />
               <Route path="*" element={<NotFound />} />
-              <Route path="/create" element={<CreateCommunity />} />
+              <Route path="/create" element={<CreateCommunity userLocation={location}/>} />
             </Routes>
           </div>
         ) : (

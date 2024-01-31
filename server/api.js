@@ -41,17 +41,12 @@ router.post("/initsocket", (req, res) => {
   res.send({});
 });
 
-// |------------------------------|
-// | write your API methods below!|
-// |------------------------------|
-
 // Makes a new canvas
 router.post("/canvas", (req, res) => {
   console.log(req.body);
   const newCanvas = new Canvas({
     name: req.body.name,
-    moderators: req.body.moderators,
-    // location: req.body.location,
+    location: req.body.location,
     pixels: req.body.pixels,
     visitors: req.body.visitors
   });
@@ -67,7 +62,7 @@ router.put('/canvas', async(req, res) => {
   res.json({ success: true, updatedCanvas });
 })
 
-
+// Updates a user
 router.put('/user', async(req, res) => {
   const requestData = req.body;
   const updatedUser = await User.findOneAndUpdate(
@@ -81,7 +76,7 @@ router.get("/canvas/:canvas_name", async(req, res) => {
   Canvas.find({name : req.params.canvas_name}).then((canvas) => res.send(JSON.stringify(canvas[0])));
 });
 
-// Retrieves a canvas using name
+// Retrieves all canvases
 router.get("/all/canvas", async(req, res) => {
   try {
     const data = await Canvas.find().sort({ visitors: -1 });
@@ -95,15 +90,6 @@ router.get("/all/canvas", async(req, res) => {
 // Retrieves a canvas using id
 router.get("/canvas/id/:canvas_id", async(req, res) => {
   Canvas.find({_id : req.params.canvas_id}).then((canvas) => res.send(JSON.stringify(canvas[0])));
-});
-
-
-router.post("/initsocket", (req, res) => {
-  // do nothing if user not logged ins
-  if (req.user){
-    socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
-  }
-  res.send({});
 });
 
 // anything else falls to this "not found" case

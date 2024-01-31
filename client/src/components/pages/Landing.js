@@ -10,14 +10,14 @@ import "./Skeleton.css";
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "484515812638-qmq9pmi6ka07fp1vem17m62to5dodu7f.apps.googleusercontent.com";
 
-const Login = ({ userId, handleLogin, handleLogout }) => {
+const Login = ({ userId, handleLogin, location }) => {
   return (
     <div>
       {userId ? (
         <div>
           <div class="landing">
             <div id="map">
-              <Map />
+              <Map location={location}/>
             </div>
           </div>
         </div>

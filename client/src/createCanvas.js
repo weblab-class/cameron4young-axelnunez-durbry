@@ -1,6 +1,6 @@
 import {post} from "./utilities";
 
-const createCanvas = (name, moderators, visitors) => {
+const createCanvas = (name, location, visitors) => {
   let pixelTest = []; 
   for (let i = 0; i<15; i++){
     let row = [];
@@ -13,8 +13,11 @@ const createCanvas = (name, moderators, visitors) => {
   console.log(pixelTest);
   const newCanvas = {
     "name": name,
-    "moderators": moderators,
     "pixels": pixelTest,
+    "location": {
+      type: 'Point',
+      coordinates: location
+    },
     "visitors": visitors
   }
   post("/api/canvas/", newCanvas);
