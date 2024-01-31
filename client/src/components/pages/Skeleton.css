@@ -1,4 +1,9 @@
-/* Fill me in :) */
+
+body{
+    background-color: #0e5b3e;
+}
+
+
 .landing {
     display: flex;
     justify-content: center;
@@ -15,7 +20,7 @@
 
 .down{
     position:relative;
-    top:30vh;
+    top:10vh;
 }
 
 .button-container{
@@ -34,12 +39,11 @@
 }
 
 .dialog-container {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 50%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -57,5 +61,190 @@
 .feed-list{
     display:block;
     position: absolute;
-    left:22.5vw;
+    left:35vw;
+    top:7vh;
+}
+
+.centered-grid {
+    display: flex;
+    width:100vw;
+    position: absolute;
+    /* left:25vw; */
+    justify-content: center;
+    align-items: center; 
+    height: 100vh; 
+  }
+
+  .buffer {
+    /* width: 50vw; */
+    background-color: rgb(214, 234, 203);
+  }
+
+.title-text1{
+    color:white;
+    position: relative;
+    top:2vh;
+    font-size: 8vw;
+    writing-mode: vertical-rl; /* Vertical text from right to left */
+    transform: rotate(180deg); /* Rotate the text to make it readable */
+}
+
+.title-text2{
+    color:white;
+    position: relative;
+    top:2vh;
+    left:55vw;
+    font-size: 8vw;
+    writing-mode: vertical-lr; 
+    /* transform: rotate(-180deg); */
+}
+
+.guide-container{
+    z-index: 5;
+    display: flex;
+    position: absolute;
+    left:25vw;
+    top:12.5vh;
+    align-items: center; /* vertically center */
+    width: 50vw;
+    height: 80vh; /* make the body fill the entire viewport height */
+    margin: 0; /* remove default margin */
+    /* background-color: white; */
+}
+
+.inner-container{
+    background-color: blanchedalmond;
+}
+
+.open-button {
+    position: absolute;
+    right:0px;
+    top:0px;
+    font-size: 20px;
+    background-color: #0e5b3e;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    z-index: 4;
+}
+
+.submit-button {
+    position: relative;
+    left:35vw;
+    bottom:2vh;
+    font-size: 20px;
+    background-color: #0e5b3e;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    z-index: 4;
+}
+
+.formInput{
+    position: relative;
+    left:10vw;
+    width: 20vw;
+    top:3vh;
+}
+
+.note{
+    font-size: 15px;
+    position: relative;
+    bottom: 1vh;
+}
+
+.open-button:hover {
+    box-shadow:5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.creation-container{
+    font-size: 2vw;
+    z-index: 5;
+    position: absolute;
+    left:25vw;
+    top:25vh;
+    width: 50vw;
+    height: 80vh; 
+    margin: 0; 
+}
+
+.inner-container{
+    /* display: block; */
+    background-color: blanchedalmond;
+    align-items: center;
+}
+
+.glow-text {
+    color: #000;
+    text-shadow: 0 0 5px #ffffff;
+    animation: glowing-animation 10s infinite; 
+  }
+  
+  @keyframes glowing-animation {
+    0% {
+        text-shadow: none;
+    }
+    50% {
+        text-shadow: 0 0 5px #ffffff;
+    }
+    100% {
+        text-shadow: none;
+    }
+}
+
+.pin-clip1{
+    width: 10vw;
+    top:10vh;
+    position: absolute;
+    left: 20vw;
+    animation: drop1 10s infinite; 
+    opacity: 0;
+}
+
+
+@keyframes drop1 {
+    0% {
+        top:10vh;
+        opacity: 0;
+    }
+
+    50%{
+        top: 15vh;
+        opacity: 1;
+    }
+
+    100% {
+        top:10vh;
+        opacity: 0;
+    }
+}
+
+.pin-clip2{
+    width:15vw;
+    position: absolute;
+    top:45vh;
+    right: 15vw;
+    opacity: 0;
+    animation: drop1 10s infinite; 
+}
+
+@keyframes drop2 {
+    0% {
+        top:45vh;
+        opacity: 0;
+    }
+
+    50%{
+        top: 60vh;
+        opacity: 1;
+    }
+
+    100% {
+        top:45vh;
+        opacity: 0;
+    }
 }

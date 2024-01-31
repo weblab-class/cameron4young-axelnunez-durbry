@@ -4,74 +4,103 @@ import "../../utilities.css";
 import "./Skeleton.css";
 import { useParams } from 'react-router-dom';
 import GridItem from "./GridItem";
+import {getDistance} from 'geolib';
 
 // canvas object that has dimensions (integer) & color string
 // use a GET call on our database to get the dimensions and the string of hexcodes for the pixels of the canvas
 // for each hexcode, we add a pixel of said color
 
 const Canvas = () => {
-    
+  const [location, setLocation] = useState();
   const [canv, setCanv] = useState();
   const [currentUser, setCurrentUser] = useState();
+  const [canEdit, setCanEdit] = useState(false);
   const { community_name } = useParams();
-  let numPixels;
 
-  async function setUser (){
-    try {
-      await get("/api/whoami").then((user) => {
-        setCurrentUser(user)
-      });
-      console.log(currentUser)
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  
+  let numPixels;
+ 
+  let difference = undefined;
+
+
+
   useEffect(() => {
     try {
-      setUser();
-      get(`/api/canvas/${community_name}`).then((response)=>{
+      async function setUser (){ 
+        try {
+          await get("/api/whoami").then((user) => {
+            setCurrentUser(user)
+          });
+          console.log(currentUser)
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      
+      setUser(); // gets user
+
+      get(`/api/canvas/${community_name}`).then((response)=>{ // gets canvas
+        console.log(response);
         setCanv(response);
       });
+      console.log(location)
+
+      navigator.geolocation.getCurrentPosition( //gets location
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
+        },
+        (error) => {
+          console.log(error)
+          setLocation(undefined);
+      });  
+
+
     } catch (error) {
       console.log(error)
-      // return <p>Canvas not found.</p>;
+      setCanv(null)
     }
-  }, []);
+  }, [community_name]);
 
   useEffect(() => {
-    document.title = community_name;
     try {
-      get("/api/whoami").then((user) => setCurrentUser(user));
+      if (location){
+        let canvas_position = {latitude:canv.location.coordinates[0], longitude:canv.location.coordinates[1]} // sets editing privileges
+        difference = getDistance(location, canvas_position)<50
+        if (getDistance(location, canvas_position)<50){
+          setCanEdit(true);
+        }
+      }
     } catch (error) {
-      console.log(error)
+      setCanEdit(false);
     }
-  }, [canv]);
+  }, [location, canv]);
 
-  if (typeof canv==='undefined'){
+  if (!canv || canv.response){
     return <p>Canvas not found.</p>
-  } else{
+  } else {
     let dimensions = canv.pixels.length;
     let colors = canv.pixels
     let input_id = `_${canv._id}`
 
-    if (currentUser && canv){
+    if (currentUser && canv){ // sets as a visited place if the user can edit and has not visited this location already. code can be further modified in the future to add pixel limits
       if (currentUser.placesVisited[input_id]!=null){
         numPixels = currentUser.placesVisited[input_id];
       } else{
-        let newPlacesVisited = currentUser.placesVisited;
-        newPlacesVisited[input_id] = 5;
-        try {
-          put(`/api/user`, {googleid: currentUser.googleid, placesVisited: newPlacesVisited}).then(res=>{
-            console.log(res);
-          })
-        } catch (error) {
-          console.log(error);
+        if (canEdit){
+          let newPlacesVisited = currentUser.placesVisited;
+          newPlacesVisited[input_id] = 1;
+          try {
+            put(`/api/user`, {googleid: currentUser.googleid, placesVisited: newPlacesVisited}).then(res=>{
+              console.log(res);
+            })
+          } catch (error) {
+            console.log(error);
+          }
+          numPixels = 1;
         }
-        numPixels = 5;
       }
     } else {
-      return <p>Canvas not found.</p>
+      return <p>Canvas not found</p>
     }
     const squareGrid = {
         display: 'grid',
@@ -83,20 +112,27 @@ const Canvas = () => {
     const gridItems = [];
         for (var i = 0; i < dimensions; i++) {
           for (var j = 0; j < dimensions; j++) {
-            gridItems.push(<GridItem canvas_id = {canv._id} colors = {colors} key={`${i}-${j}`} i={i} j={j} color={colors[i][j]}/>);
+            gridItems.push(<GridItem privileges = {canEdit} canvas_id = {canv._id} colors = {colors} key={`${i}-${j}`} i={i} j={j} color={colors[i][j]}/>);
           }
         }
         return gridItems;
     };
-  return <div>
-      <div style={squareGrid}>{
-          generateGrid()}
-      </div>
-      <p>
-        {community_name}
-      </p>
-  </div>
-  }
+    return <div className='centered-grid'>
+              <div className='buffer'>
+              <p>
+                {community_name}'s Canvas
+              </p>
+              <div style={squareGrid}>{
+                  generateGrid()}
+              </div>
+              {canEdit ? (
+                <p>You are able to edit this canvas</p>
+              ):(
+                <p>You are unable to edit this canvas</p>
+              )}
+            </div>
+        </div>
+    } 
 };
 
 export default Canvas;

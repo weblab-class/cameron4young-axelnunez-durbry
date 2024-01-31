@@ -1,6 +1,11 @@
 .Map {
-    height: 90vh;
-    width: 90vw;
+    display:block;
+    position: absolute;
+    left:0px;
+    top:0px;
+    height: 100vh;
+    width: 100vw;
+    z-index: 1;
   }
   
   .map-container {

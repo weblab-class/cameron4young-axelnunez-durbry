@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import "../../utilities.css";
 import "./Skeleton.css";
 import {get, put} from "../../utilities";
-import { parse } from 'ipaddr.js';
 
 
-const GridItem = ({canvas_id, colors, i, j, color }) => {
+const GridItem = ({privileges, canvas_id, colors, i, j, color }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newColor, setNewColor] = useState(color);
   const [currentUser, setCurrentUser] = useState();
@@ -28,7 +27,11 @@ const GridItem = ({canvas_id, colors, i, j, color }) => {
   }, []);
 
   const handleDivClick = () => {
-    setIsDialogOpen(true);
+    if (privileges){
+      setIsDialogOpen(true);
+    } else{
+      alert("You are too far away to edit this canvas!");
+    }
   };
 
   const handleDialogClose = () => {
@@ -56,12 +59,12 @@ const GridItem = ({canvas_id, colors, i, j, color }) => {
         onClick={handleDivClick}
       ></div>
       {isDialogOpen && (
-        <div className="dialog">
+        <div >
           <div className="dialog-container">
             <div className="dialog">
               <p>Choose a new color for pixel ({i}, {j}).</p>
               <input type="color" value={newColor} onChange={handlePalette}></input>
-              <button onClick={submit}>Submit</button>
+              <button onClick={submit}>Place Pixel</button>
               <button onClick={handleDialogClose}>Close</button>
             </div>
           </div>

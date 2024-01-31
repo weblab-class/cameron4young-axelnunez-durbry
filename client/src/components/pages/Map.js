@@ -132,7 +132,28 @@ const Map = (location) => {
           ) : null}
           </GoogleMap>
       ) : (
-        <h1>Loading map...</h1>
+        <GoogleMap
+          mapContainerClassName="map-container"
+          center={center}
+          options={options}
+          zoom={18}
+        >
+          {placeCanvasMarkers(canvasList)}
+          {selectedElement ? (
+            <InfoWindow
+              position={activeMarker}
+              onCloseClick={() => {
+                setSelectedElement(null);
+              }}
+            >
+              <div>
+                <Link to={`/canvas/${selectedElement.name}`}>
+                  <h1>Click here to visit {selectedElement.name}!</h1>
+                </Link>
+              </div>
+            </InfoWindow>
+          ) : null}
+        </GoogleMap>
       )}
     </div>
   );

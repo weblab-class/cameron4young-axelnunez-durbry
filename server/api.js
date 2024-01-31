@@ -53,7 +53,7 @@ router.post("/canvas", (req, res) => {
   newCanvas.save().then((canvas) => res.send(canvas));
 });
 
-// Updates a pixel 
+// Updates the canvas 
 router.put('/canvas', async(req, res) => {
   const requestData = req.body;
   const updatedCanvas = await Canvas.findOneAndUpdate(
@@ -73,7 +73,16 @@ router.put('/user', async(req, res) => {
 
 // Retrieves a canvas using name
 router.get("/canvas/:canvas_name", async(req, res) => {
-  Canvas.find({name : req.params.canvas_name}).then((canvas) => res.send(JSON.stringify(canvas[0])));
+  try {
+    Canvas.find({ name: req.params.canvas_name }).then((canvas) => {
+      if (canvas.length === 0) {
+        return res.send(JSON.stringify({response:"No canvas found with the specified name"}));
+      }
+      res.send(JSON.stringify(canvas[0]));
+    });
+  } catch (error) {
+    return res.status(500).send("Internal server error");
+  }
 });
 
 // Retrieves all canvases

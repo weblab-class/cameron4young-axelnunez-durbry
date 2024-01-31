@@ -1,16 +1,23 @@
 .NavBar-container {
   display: flex;
   flex-direction: column;
-
   height: 100vh;
   width: 10%;
-  gap: 30px;
+  gap: 2vh;
   padding: var(--s) var(--m);
-  background-color: #476e32;
+  background-color: #654236;
+  z-index: 3;
+}
+
+.subtitle{
+  font-size: 1.5vmin;
+  position: relative;
+  bottom:1.5vh;
+  color: black;
 }
 
 .NavBar-title {
-  color: var(--white);
+  color: black;
   font-size: 20px;
 }
 
@@ -19,7 +26,7 @@
   justify-content: flex-start;
   flex-grow: 4;
   flex-direction: column;
-  gap: 40px;
+  gap: 4vh;
   /* margin-left: var(--l); */
 }
 

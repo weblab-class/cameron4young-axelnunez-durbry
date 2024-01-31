@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GoogleOAuthProvider, googleLogout } from "@react-oauth/google";
-import CreateCommunity from "./CreateCommunity.js";
 import "./BarMenu.css";
 const GOOGLE_CLIENT_ID = "484515812638-qmq9pmi6ka07fp1vem17m62to5dodu7f.apps.googleusercontent.com";
 
@@ -10,6 +9,7 @@ const BarMenu = (props) => {
   return (
     <nav className="NavBar-container">
       <div className="NavBar-title ">placeIRL</div>
+      <div className="subtitle">shared community artwork</div>
       <div className="NavBar-linkContainer">
         <Link to="/" className="NavBar-link">
           home

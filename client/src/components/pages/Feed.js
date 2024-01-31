@@ -58,7 +58,13 @@ const Feed = () => {
 
     function generateGrid(canvases){
         const topCanvases = [];
-        for (let i = 0; i < canvases.length; i++) {
+        let limit;
+        if (type=="top"){
+            limit = 5;
+        } else{
+            limit = canvases.length;
+        }
+        for (let i = 0; i < limit; i++) {
             const link = `/canvas/${canvases[i]}`
             topCanvases.push(
             <Link key={i} to={link}>
@@ -69,14 +75,16 @@ const Feed = () => {
     }
 
     const feed_box = {
-        width:"50vw",
-        height:"30vh",
+        width:"30vw",
+        height:"15vh",
         borderRadius: '5px',
         display: 'flex',
+        backgroundColor:'white',
         justifyContent: 'center', 
         alignItems: 'center',
         border: '1px solid black',
-        boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)', 
+        boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)', 
+        marginBottom:"3vh"
     };
 
 
@@ -100,7 +108,12 @@ const Feed = () => {
     },[currentUser, type] );
     if (type ==="top" || type==="personal"){
         return <>
-                <p>{type}</p>
+                {(type=="top") ? (
+                <p className='title-text1'>top places</p>
+                
+              ):(
+                <p className='title-text2'>places visited</p>
+              )}
                 <ol className="feed-list"> {generateGrid(canvasList)}</ol>
                 </>
     } else{

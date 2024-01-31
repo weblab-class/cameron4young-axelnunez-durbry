@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-//import { Link } from "react-router-dom";
+import Guide from "./pages/Guide.js"
 import NotFound from "./pages/NotFound.js";
 import Landing from "./pages/Landing.js";
 import Canvas from "./pages/Canvas.js";
@@ -14,14 +14,11 @@ import "../utilities.css";
 import { socket } from "../client-socket.js";
 import { get, post } from "../utilities";
 
-/**
- * Define the "App" component
- */
+
 const App = () => {
   const [userId, setUserId] = useState(undefined);
   const [currentUser, setCurrentUser] = useState();
   const [location, setLocation] = useState();
-  
   useEffect(() => {
     document.title = "placeIRL";
     get("/api/whoami").then((user) => {

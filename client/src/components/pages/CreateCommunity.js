@@ -30,29 +30,28 @@ const CreateCommunity = (userLocation) => {
         setAlreadyExisting(true);
       } else {
         createCanvas(communityName, [currentLocation.latitude, currentLocation.longitude], 1);
+        window.location.href = `/canvas/${communityName}`;
       }
     } catch (error) {
       console.log(error)
       setAlreadyExisting(true);
     }
-    // console.log(alreadyExisting);
-    // if (alreadyExisting) {
-    //   console.log("exists");
-    // } else {
-    //   console.log("I LOVE JAVASCRIPT");
-      // window.location.href = `/canvas/${communityName}`;
-    }
+  }
   
 
   return (
       <div>
         { currentLocation ? (
-          <div>
-            <p>create a new place!</p>
-            <p>note: place marker will be placed at your current location.</p>
-            <input type="text" value={communityName} onChange={handleName}></input>
-            <button onClick={submit}>Submit</button>
-            {alreadyExisting && <p>A place with this name already exists. Please try a new name.</p>}
+          <div className='creation-container'>
+            <div className='inner-container'>
+              <p>create a new place!</p>
+              <p className='note'>note: place marker will be placed at your current location.</p>
+              <div >
+                <input className="formInput" type="text" value={communityName} onChange={handleName}></input>
+              </div>
+              <button className="submit-button" onClick={submit}>Submit</button>
+              {alreadyExisting && <p>A place with this name already exists. Please try a new name.</p>}
+            </div>
           </div>
         ) : (
           <div>

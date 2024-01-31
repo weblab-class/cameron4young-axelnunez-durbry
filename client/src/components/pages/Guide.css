@@ -1,0 +1,38 @@
+.guide-container{
+    z-index: 5;
+    display: flex;
+    position: absolute;
+    left:25vw;
+    top:12.5vh;
+    align-items: center; /* vertically center */
+    width: 50vw;
+    height: 80vh; /* make the body fill the entire viewport height */
+    margin: 0; /* remove default margin */
+    /* background-color: white; */
+}
+
+.inner-container{
+    background-color: blanchedalmond;
+}
+
+.open-button {
+    position: absolute;
+    right:0px;
+    top:0px;
+    font-size: 20px;
+    background-color: #0e5b3e;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    z-index: 4;
+}
+
+.open-button:hover {
+    box-shadow:5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+h1, p{
+    text-align: center; /* horizontally center text within container */
+}
